@@ -1,0 +1,7 @@
+numpy
+matplotlib
+pyrtlsdr
+japanize-matplotlib
+setuptools
+scipy
+flask
