@@ -1,0 +1,5 @@
+numpy
+matplotlib
+pyrtlsdr
+japanize-matplotlib
+scipy
