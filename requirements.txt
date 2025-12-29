@@ -3,3 +3,4 @@ matplotlib
 pyrtlsdr
 japanize-matplotlib
 scipy
+setuptools
