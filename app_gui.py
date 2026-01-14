@@ -138,7 +138,7 @@ class Application(tk.Frame):
         self.toolbar_obs = NavigationToolbar2Tk(self.canvas_obs, graph_frame)
         self.canvas_obs.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
-        self.ax_obs.text(0.5, 0.5, "1. 観測情報を入力\n2. 準備 → 観測\n(観測番号は自動で進みます)", 
+        self.ax_obs.text(0.5, 0.5, "1. 観測情報を入力\n2. 電波終端を取り付けて準備\n(観測番号は自動で進みます)", 
                      ha='center', va='center', fontname="MS Gothic", fontsize=24)
         self.ax_obs.axis('off')
 
@@ -154,13 +154,13 @@ class Application(tk.Frame):
         
         f1_frame = tk.Frame(file_frame)
         f1_frame.pack(fill=tk.X, pady=2)
-        tk.Label(f1_frame, text="ON (Raw) File:", width=15, anchor="e").pack(side=tk.LEFT)
+        tk.Label(f1_frame, text="ON Source File:", width=15, anchor="e").pack(side=tk.LEFT)
         tk.Entry(f1_frame, textvariable=self.path_on, width=60).pack(side=tk.LEFT, padx=5)
         tk.Button(f1_frame, text="参照...", command=lambda: self.select_file(self.path_on)).pack(side=tk.LEFT)
 
         f2_frame = tk.Frame(file_frame)
         f2_frame.pack(fill=tk.X, pady=2)
-        tk.Label(f2_frame, text="OFF (Load) File:", width=15, anchor="e").pack(side=tk.LEFT)
+        tk.Label(f2_frame, text="OFF Source File:", width=15, anchor="e").pack(side=tk.LEFT)
         tk.Entry(f2_frame, textvariable=self.path_off, width=60).pack(side=tk.LEFT, padx=5)
         tk.Button(f2_frame, text="参照...", command=lambda: self.select_file(self.path_off)).pack(side=tk.LEFT)
 
@@ -379,7 +379,7 @@ class Application(tk.Frame):
             self.pws_load = pws_sum / prep_duration
             if is_sim: MockRtlSdr.has_load_data = True
 
-            self.ax_obs.text(0.1, 0.8, f"キャリブレーション完了 (Gain: {gain})", fontname="MS Gothic", fontsize=20)
+            self.ax_obs.text(0.1, 0.8, f"キャリブレーション完了 (Gain: {gain})\nアンテナを接続して観測を開始してください", fontname="MS Gothic", fontsize=20)
             self.ax_obs.axis('off')
             self.canvas_obs.draw()
         except Exception as e:
@@ -434,6 +434,8 @@ class Application(tk.Frame):
             np.savetxt(f"{base_name}_raw_{dt}.csv", np.vstack([self.freq, pws_sky]).T, delimiter=",", header="Freq,RawSky", comments='')
             np.savetxt(f"{base_name}_load_{dt}.csv", np.vstack([self.freq, self.pws_load]).T, delimiter=",", header="Freq,RawLoad", comments='')
             np.savetxt(f"{base_name}_spectrum_{dt}.csv", np.vstack([self.freq, spectrum_db]).T, delimiter=",", header="Freq,dB", comments='')
+            
+            self.fig_obs.savefig(f"{base_name}_spectrum_{dt}.png")
             
             self.increment_no()
             messagebox.showinfo("完了", "観測完了")

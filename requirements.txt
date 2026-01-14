@@ -4,3 +4,4 @@ pyrtlsdr
 japanize-matplotlib
 scipy
 setuptools
+pyinstaller
